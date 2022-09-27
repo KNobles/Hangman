@@ -2,19 +2,26 @@ import re
 import random
 from .hangman_pics import HANGMANPICS
 from .colors import bcolors
-from typing import List, Union
+from typing import List
 
 class Hangman:
+    """
+    A class who's purpose is to be able to play a game of Hangman, a game where 
+    the player tries to guess each letter of the word that is hidden with a limited set of lives.
+    """
+    possible_words: List[str] = ['becode', 'learning', 'mathematics', 'sessions']
 
-    def __init__(self, lives:int=5):
-        self.possible_words = ['becode', 'learning', 'mathematics', 'sessions']
-        self.word_to_find = random.choice(self.possible_words)
-        self._lives = lives
+    def __init__(self):
+        """
+        Constructor with all the attributes setup so you can play the game 
+        without any problems
+        """
+        self.word_to_find: str = random.choice(Hangman.possible_words)
+        self._lives: int = 5
         self._correctly_guessed_letters: List[str] = []
         self._wrongly_guessed_letters: List[str] = []
-        self._turn_count = 0
-        self._error_count = 0
-        self.hidden_word = self.hide_word(self.word_to_find)
+        self._turn_count: int = 0
+        self._error_count: int = 0
     
     def start_game(self):
         """
@@ -24,19 +31,22 @@ class Hangman:
         The function will call other functions to play the game and show a 
         winning text or game over text.
         """
-        while self._lives > 0:
-            print(HANGMANPICS[self._error_count])
-            print(' '.join(self.hidden_word) + "\n")
+        while self._lives > 0 and self._hidden_word != self.word_to_find:
+            if self._error_count < len(HANGMANPICS):
+                print(HANGMANPICS[self._error_count])
+                
+            print(' '.join(self._hidden_word) + "\n")
             print(f"{bcolors.OKGREEN}Correctly guessed: {self._correctly_guessed_letters}{bcolors.ENDC}")
             print(f"{bcolors.FAIL}Wrongly guessed: {self._wrongly_guessed_letters}{bcolors.ENDC}")
             print(f"{bcolors.BOLD}Lives: {self._lives}")
             print(f"Error(s): {self._error_count}")
             print(f"Turn(s): {self._turn_count}{bcolors.ENDC}")
             self.play()
-            if self.hidden_word == self.word_to_find:
-                return self.well_played()
-            #self._turn_count += 1
-        self.game_over()
+
+        if self._hidden_word == self.word_to_find:
+            self.well_played()
+        elif self._lives == 0:
+            self.game_over()
     
     def play(self):
         """
@@ -47,17 +57,16 @@ class Hangman:
         If it is wrongly guessed then the player loses a life, has its error count incremented and 
         has its letter appear in the wrongly guessed list.
         """
-        #print(self.word_to_find)
-        #print(' '.join(self.hidden_word) + "\n")
         letter = input(f"{bcolors.BOLD}Please enter a single letter...: {bcolors.ENDC}").lower().strip()
         if len(letter) == 1 and letter.isalpha():
             if letter not in self._correctly_guessed_letters and letter not in self._wrongly_guessed_letters:
-                #print("You guessed the letter: " + letter)
                 self._turn_count += 1
                 if re.search(letter, self.word_to_find):
                     self._correctly_guessed_letters += letter
+                    # This for loop is used to replace the underscore(s)(hidden word)
+                    # with the letter(s) at the right index
                     for m in re.finditer(f"[{letter}]", self.word_to_find):
-                        self.hidden_word = self.hidden_word[:m.start()] + letter + self.hidden_word[m.start()+1:]   
+                        self._hidden_word = self._hidden_word[:m.start()] + letter + self._hidden_word[m.start()+1:]   
                 else:
                     self._error_count += 1
                     self._lives -= 1
@@ -67,7 +76,7 @@ class Hangman:
                 return self.play()
         else:
             print(f"{bcolors.WARNING}Wrong input!!\n{bcolors.ENDC}")
-            return self.start_game()
+            return self.play()
 
     def game_over(self):
         """
@@ -92,5 +101,8 @@ class Hangman:
         """
         hidden_word = ""
         for char in word_to_hide:
-            hidden_word += "_"
+            if char == '-':
+                hidden_word += char
+            else:    
+                hidden_word += "_"
         return hidden_word
