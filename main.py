@@ -1,4 +1,4 @@
 from utils.game import Hangman
 
-hang = Hangman(8)
+hang = Hangman()
 hang.start_game()

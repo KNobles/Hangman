@@ -17,12 +17,15 @@ class Hangman:
         without any problems
         """
         self.word_to_find: str = random.choice(Hangman.possible_words)
-        self._lives: int = 5
+
+        # Do not touch this variable or else problem will arise upon showing the hangman drawing
+        self._lives: int = 6
         self._correctly_guessed_letters: List[str] = []
         self._wrongly_guessed_letters: List[str] = []
         self._turn_count: int = 0
         self._error_count: int = 0
-    
+        self._hidden_word: str = self.hide_word(self.word_to_find)
+
     def start_game(self):
         """
         Start the game of Hangman by looping through the game's data such as 
@@ -32,9 +35,7 @@ class Hangman:
         winning text or game over text.
         """
         while self._lives > 0 and self._hidden_word != self.word_to_find:
-            if self._error_count < len(HANGMANPICS):
-                print(HANGMANPICS[self._error_count])
-                
+            print(HANGMANPICS[self._error_count])
             print(' '.join(self._hidden_word) + "\n")
             print(f"{bcolors.OKGREEN}Correctly guessed: {self._correctly_guessed_letters}{bcolors.ENDC}")
             print(f"{bcolors.FAIL}Wrongly guessed: {self._wrongly_guessed_letters}{bcolors.ENDC}")
