@@ -15,5 +15,7 @@ The game ends until you've guessed all the letters or until you've lost all of y
 
 [![Tue-Sep-27-02-07-47-PM-CEST-2022.png](https://i.postimg.cc/PJMNjVYD/Tue-Sep-27-02-07-47-PM-CEST-2022.png)](https://postimg.cc/gLnGyDMc)
 
-[![Tue-Sep-27-02-07-47-PM-CEST-2022.png](https://i.postimg.cc/PJMNjVYD/Tue-Sep-27-02-07-47-PM-CEST-2022.png)](https://postimg.cc/gLnGyDMc)
+[![Tue-Sep-27-02-21-45-PM-CEST-2022.png](https://i.postimg.cc/DfWT3Md3/Tue-Sep-27-02-21-45-PM-CEST-2022.png)](https://postimg.cc/XX0hwxzs)
+
+
 
